@@ -1,0 +1,96 @@
+{
+    "query_block": {
+        "select_id": 1,
+        "cost_info": {
+            "query_cost": "187.51"
+        },
+        "grouping_operation": {
+            "using_filesort": true,
+            "cost_info": {
+                "sort_cost": "138.32"
+            },
+            "table": {
+                "table_name": "day_of_week",
+                "access_type": "ALL",
+                "rows_examined_per_scan": 415,
+                "rows_produced_per_join": 138,
+                "filtered": "33.33",
+                "cost_info": {
+                    "read_cost": "35.36",
+                    "eval_cost": "13.83",
+                    "prefix_cost": "49.19",
+                    "data_read_per_join": "29K"
+                },
+                "used_columns": [
+                    "menu_nm",
+                    "day_of_week",
+                    "row_num"
+                ],
+                "attached_condition": "(`day_of_week`.`row_num` <= 10)",
+                "materialized_from_subquery": {
+                    "using_temporary_table": true,
+                    "dependent": false,
+                    "cacheable": true,
+                    "query_block": {
+                        "select_id": 2,
+                        "cost_info": {
+                            "query_cost": "509.42"
+                        },
+                        "windowing": {
+                            "windows": [
+                                {
+                                    "name": "<unnamed window>",
+                                    "using_filesort": true,
+                                    "filesort_key": [
+                                        "`dayofweek_log_tktm`",
+                                        "count(0) desc",
+                                        "`MENU_NM`"
+                                    ],
+                                    "functions": [
+                                        "row_number"
+                                    ]
+                                }
+                            ],
+                            "cost_info": {
+                                "sort_cost": "415.00"
+                            },
+                            "grouping_operation": {
+                                "using_temporary_table": true,
+                                "using_filesort": false,
+                                "table": {
+                                    "table_name": "MENU_LOG",
+                                    "access_type": "range",
+                                    "possible_keys": [
+                                        "menu_log_idx-01"
+                                    ],
+                                    "key": "menu_log_idx-01",
+                                    "used_key_parts": [
+                                        "MENU_NM"
+                                    ],
+                                    "key_length": "203",
+                                    "rows_examined_per_scan": 415,
+                                    "rows_produced_per_join": 415,
+                                    "filtered": "100.00",
+                                    "using_index": true,
+                                    "cost_info": {
+                                        "read_cost": "52.92",
+                                        "eval_cost": "41.50",
+                                        "prefix_cost": "94.42",
+                                        "data_read_per_join": "155K"
+                                    },
+                                    "used_columns": [
+                                        "LOG_TKTM",
+                                        "LOG_ID",
+                                        "MENU_NM",
+                                        "dayofweek_log_tktm"
+                                    ],
+                                    "attached_condition": "(`kakaobank`.`menu_log`.`MENU_NM` not in ('login','logout'))"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

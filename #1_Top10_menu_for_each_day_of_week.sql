@@ -1,13 +1,13 @@
 # 1번 문제
-WITH
+WITH 
 `day_of_week` AS (
 	SELECT
 		menu_nm,
-        DAYOFWEEK(log_tktm) AS day_of_week,
-        ROW_NUMBER() OVER (PARTITION BY DAYOFWEEK(log_tktm) ORDER BY COUNT(*) DESC, menu_nm ASC) AS row_num
+        dayofweek_log_tktm AS day_of_week,
+        ROW_NUMBER() OVER (PARTITION BY dayofweek_log_tktm ORDER BY COUNT(*) DESC, menu_nm ASC) AS row_num
 	FROM KAKAOBANK.MENU_LOG
-    WHERE menu_nm NOT IN ('login','logout')
-    GROUP BY menu_nm, DAYOFWEEK(log_tktm)
+    WHERE menu_nm NOT IN ('login', 'logout')
+    GROUP BY menu_nm, dayofweek_log_tktm
 )
 SELECT
 	CONCAT('Top', row_num, ' 메뉴') AS `구분`,

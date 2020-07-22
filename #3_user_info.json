@@ -1,0 +1,567 @@
+{
+    "query_block": {
+        "select_id": 1,
+        "cost_info": {
+            "query_cost": "446.31"
+        },
+        "ordering_operation": {
+            "using_temporary_table": true,
+            "using_filesort": true,
+            "cost_info": {
+                "sort_cost": "312.00"
+            },
+            "nested_loop": [
+                {
+                    "table": {
+                        "table_name": "a",
+                        "access_type": "ALL",
+                        "rows_examined_per_scan": 5,
+                        "rows_produced_per_join": 5,
+                        "filtered": "100.00",
+                        "cost_info": {
+                            "read_cost": "2.56",
+                            "eval_cost": "0.50",
+                            "prefix_cost": "3.06",
+                            "data_read_per_join": "400"
+                        },
+                        "used_columns": [
+                            "usr_no",
+                            "reg_dt"
+                        ],
+                        "materialized_from_subquery": {
+                            "using_temporary_table": true,
+                            "dependent": false,
+                            "cacheable": true,
+                            "query_block": {
+                                "select_id": 2,
+                                "cost_info": {
+                                    "query_cost": "2.00"
+                                },
+                                "grouping_operation": {
+                                    "using_filesort": false,
+                                    "table": {
+                                        "table_name": "USR_INFO_CHG_LOG",
+                                        "access_type": "range",
+                                        "possible_keys": [
+                                            "usr_info_chg_log_idx-02"
+                                        ],
+                                        "key": "usr_info_chg_log_idx-02",
+                                        "used_key_parts": [
+                                            "USR_NO"
+                                        ],
+                                        "key_length": "43",
+                                        "rows_examined_per_scan": 5,
+                                        "rows_produced_per_join": 5,
+                                        "filtered": "100.00",
+                                        "using_index_for_group_by": true,
+                                        "cost_info": {
+                                            "read_cost": "1.50",
+                                            "eval_cost": "0.50",
+                                            "prefix_cost": "2.00",
+                                            "data_read_per_join": "2K"
+                                        },
+                                        "used_columns": [
+                                            "LOG_TKTM",
+                                            "LOG_ID",
+                                            "USR_NO"
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    "table": {
+                        "table_name": "rsdt_rank",
+                        "access_type": "ref",
+                        "possible_keys": [
+                            "<auto_key0>"
+                        ],
+                        "key": "<auto_key0>",
+                        "used_key_parts": [
+                            "usr_no",
+                            "row_num"
+                        ],
+                        "key_length": "51",
+                        "ref": [
+                            "a.usr_no",
+                            "const"
+                        ],
+                        "rows_examined_per_scan": 2,
+                        "rows_produced_per_join": 10,
+                        "filtered": "100.00",
+                        "cost_info": {
+                            "read_cost": "2.50",
+                            "eval_cost": "1.00",
+                            "prefix_cost": "6.56",
+                            "data_read_per_join": "1K"
+                        },
+                        "used_columns": [
+                            "usr_no",
+                            "rsdt_no",
+                            "row_num"
+                        ],
+                        "materialized_from_subquery": {
+                            "using_temporary_table": true,
+                            "dependent": false,
+                            "cacheable": true,
+                            "query_block": {
+                                "select_id": 4,
+                                "cost_info": {
+                                    "query_cost": "7.76"
+                                },
+                                "windowing": {
+                                    "windows": [
+                                        {
+                                            "name": "<unnamed window>",
+                                            "using_filesort": true,
+                                            "filesort_key": [
+                                                "`USR_NO`",
+                                                "`LOG_TKTM` desc"
+                                            ],
+                                            "functions": [
+                                                "row_number"
+                                            ]
+                                        }
+                                    ],
+                                    "cost_info": {
+                                        "sort_cost": "5.00"
+                                    },
+                                    "table": {
+                                        "table_name": "USR_INFO_CHG_LOG",
+                                        "access_type": "range",
+                                        "possible_keys": [
+                                            "usr_info_chg_log_idx-01"
+                                        ],
+                                        "key": "usr_info_chg_log_idx-01",
+                                        "used_key_parts": [
+                                            "RSDT_NO"
+                                        ],
+                                        "key_length": "83",
+                                        "rows_examined_per_scan": 5,
+                                        "rows_produced_per_join": 5,
+                                        "filtered": "100.00",
+                                        "index_condition": "(`kakaobank`.`usr_info_chg_log`.`RSDT_NO` <> '')",
+                                        "cost_info": {
+                                            "read_cost": "2.26",
+                                            "eval_cost": "0.50",
+                                            "prefix_cost": "2.76",
+                                            "data_read_per_join": "2K"
+                                        },
+                                        "used_columns": [
+                                            "LOG_TKTM",
+                                            "LOG_ID",
+                                            "USR_NO",
+                                            "RSDT_NO"
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    "table": {
+                        "table_name": "c",
+                        "access_type": "ALL",
+                        "rows_examined_per_scan": 2,
+                        "rows_produced_per_join": 20,
+                        "filtered": "100.00",
+                        "using_join_buffer": "hash join",
+                        "cost_info": {
+                            "read_cost": "2.55",
+                            "eval_cost": "2.00",
+                            "prefix_cost": "11.11",
+                            "data_read_per_join": "2K"
+                        },
+                        "used_columns": [
+                            "usr_no",
+                            "loc_nm",
+                            "prev_loc_nm"
+                        ],
+                        "attached_condition": "<if>(is_not_null_compl(c), (`c`.`usr_no` = `a`.`usr_no`), true)",
+                        "materialized_from_subquery": {
+                            "using_temporary_table": true,
+                            "dependent": false,
+                            "cacheable": true,
+                            "query_block": {
+                                "select_id": 5,
+                                "cost_info": {
+                                    "query_cost": "0.94"
+                                },
+                                "table": {
+                                    "table_name": "curr_t",
+                                    "access_type": "ref",
+                                    "possible_keys": [
+                                        "<auto_key0>"
+                                    ],
+                                    "key": "<auto_key0>",
+                                    "used_key_parts": [
+                                        "row_num"
+                                    ],
+                                    "key_length": "8",
+                                    "ref": [
+                                        "const"
+                                    ],
+                                    "rows_examined_per_scan": 2,
+                                    "rows_produced_per_join": 2,
+                                    "filtered": "100.00",
+                                    "cost_info": {
+                                        "read_cost": "0.68",
+                                        "eval_cost": "0.27",
+                                        "prefix_cost": "0.95",
+                                        "data_read_per_join": "432"
+                                    },
+                                    "used_columns": [
+                                        "usr_no",
+                                        "loc_nm",
+                                        "log_tktm",
+                                        "row_num"
+                                    ],
+                                    "materialized_from_subquery": {
+                                        "using_temporary_table": true,
+                                        "dependent": false,
+                                        "cacheable": true,
+                                        "query_block": {
+                                            "select_id": 7,
+                                            "cost_info": {
+                                                "query_cost": "31.25"
+                                            },
+                                            "windowing": {
+                                                "windows": [
+                                                    {
+                                                        "name": "<unnamed window>",
+                                                        "using_filesort": true,
+                                                        "filesort_key": [
+                                                            "`USR_NO`",
+                                                            "`LOG_TKTM` desc"
+                                                        ],
+                                                        "functions": [
+                                                            "row_number"
+                                                        ]
+                                                    }
+                                                ],
+                                                "cost_info": {
+                                                    "sort_cost": "27.00"
+                                                },
+                                                "table": {
+                                                    "table_name": "USR_INFO_CHG_LOG",
+                                                    "access_type": "ALL",
+                                                    "possible_keys": [
+                                                        "usr_info_chg_log_idx-03"
+                                                    ],
+                                                    "rows_examined_per_scan": 40,
+                                                    "rows_produced_per_join": 27,
+                                                    "filtered": "67.50",
+                                                    "cost_info": {
+                                                        "read_cost": "1.55",
+                                                        "eval_cost": "2.70",
+                                                        "prefix_cost": "4.25",
+                                                        "data_read_per_join": "13K"
+                                                    },
+                                                    "used_columns": [
+                                                        "LOG_TKTM",
+                                                        "LOG_ID",
+                                                        "USR_NO",
+                                                        "LOC_NM"
+                                                    ],
+                                                    "attached_condition": "(`kakaobank`.`usr_info_chg_log`.`LOC_NM` <> '')"
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                "select_list_subqueries": [
+                                    {
+                                        "dependent": true,
+                                        "cacheable": false,
+                                        "query_block": {
+                                            "select_id": 6,
+                                            "cost_info": {
+                                                "query_cost": "1.75"
+                                            },
+                                            "ordering_operation": {
+                                                "using_filesort": true,
+                                                "table": {
+                                                    "table_name": "prev_t",
+                                                    "access_type": "ref",
+                                                    "possible_keys": [
+                                                        "PRIMARY",
+                                                        "usr_info_chg_log_idx-02"
+                                                    ],
+                                                    "key": "usr_info_chg_log_idx-02",
+                                                    "used_key_parts": [
+                                                        "USR_NO"
+                                                    ],
+                                                    "key_length": "43",
+                                                    "ref": [
+                                                        "curr_t.usr_no"
+                                                    ],
+                                                    "rows_examined_per_scan": 10,
+                                                    "rows_produced_per_join": 3,
+                                                    "filtered": "33.33",
+                                                    "index_condition": "(`curr_t`.`log_tktm` > `kakaobank`.`prev_t`.`LOG_TKTM`)",
+                                                    "cost_info": {
+                                                        "read_cost": "0.75",
+                                                        "eval_cost": "0.33",
+                                                        "prefix_cost": "1.75",
+                                                        "data_read_per_join": "1K"
+                                                    },
+                                                    "used_columns": [
+                                                        "LOG_TKTM",
+                                                        "LOG_ID",
+                                                        "USR_NO",
+                                                        "LOC_NM"
+                                                    ]
+                                                }
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                {
+                    "table": {
+                        "table_name": "mcco_rank",
+                        "access_type": "ref",
+                        "possible_keys": [
+                            "<auto_key0>"
+                        ],
+                        "key": "<auto_key0>",
+                        "used_key_parts": [
+                            "usr_no",
+                            "row_num"
+                        ],
+                        "key_length": "51",
+                        "ref": [
+                            "a.usr_no",
+                            "const"
+                        ],
+                        "rows_examined_per_scan": 2,
+                        "rows_produced_per_join": 40,
+                        "filtered": "100.00",
+                        "cost_info": {
+                            "read_cost": "10.00",
+                            "eval_cost": "4.00",
+                            "prefix_cost": "25.11",
+                            "data_read_per_join": "10K"
+                        },
+                        "used_columns": [
+                            "usr_no",
+                            "mcco_nm",
+                            "row_num"
+                        ],
+                        "materialized_from_subquery": {
+                            "using_temporary_table": true,
+                            "dependent": false,
+                            "cacheable": true,
+                            "query_block": {
+                                "select_id": 9,
+                                "cost_info": {
+                                    "query_cost": "22.26"
+                                },
+                                "windowing": {
+                                    "windows": [
+                                        {
+                                            "name": "<unnamed window>",
+                                            "using_filesort": true,
+                                            "filesort_key": [
+                                                "`USR_NO`",
+                                                "`LOG_TKTM` desc"
+                                            ],
+                                            "functions": [
+                                                "row_number"
+                                            ]
+                                        }
+                                    ],
+                                    "cost_info": {
+                                        "sort_cost": "15.00"
+                                    },
+                                    "table": {
+                                        "table_name": "USR_INFO_CHG_LOG",
+                                        "access_type": "range",
+                                        "possible_keys": [
+                                            "usr_info_chg_log_idx-04"
+                                        ],
+                                        "key": "usr_info_chg_log_idx-04",
+                                        "used_key_parts": [
+                                            "MCCO_NM"
+                                        ],
+                                        "key_length": "203",
+                                        "rows_examined_per_scan": 15,
+                                        "rows_produced_per_join": 15,
+                                        "filtered": "100.00",
+                                        "index_condition": "(`kakaobank`.`usr_info_chg_log`.`MCCO_NM` <> '')",
+                                        "cost_info": {
+                                            "read_cost": "5.76",
+                                            "eval_cost": "1.50",
+                                            "prefix_cost": "7.26",
+                                            "data_read_per_join": "7K"
+                                        },
+                                        "used_columns": [
+                                            "LOG_TKTM",
+                                            "LOG_ID",
+                                            "USR_NO",
+                                            "MCCO_NM"
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    "table": {
+                        "table_name": "e",
+                        "access_type": "ref",
+                        "possible_keys": [
+                            "<auto_key0>"
+                        ],
+                        "key": "<auto_key0>",
+                        "used_key_parts": [
+                            "usr_no"
+                        ],
+                        "key_length": "43",
+                        "ref": [
+                            "a.usr_no"
+                        ],
+                        "rows_examined_per_scan": 7,
+                        "rows_produced_per_join": 312,
+                        "filtered": "100.00",
+                        "cost_info": {
+                            "read_cost": "78.00",
+                            "eval_cost": "31.20",
+                            "prefix_cost": "134.31",
+                            "data_read_per_join": "21K"
+                        },
+                        "used_columns": [
+                            "usr_no",
+                            "most_visit_menu",
+                            "latest_visit_menu"
+                        ],
+                        "materialized_from_subquery": {
+                            "using_temporary_table": true,
+                            "dependent": false,
+                            "cacheable": true,
+                            "query_block": {
+                                "select_id": 10,
+                                "cost_info": {
+                                    "query_cost": "128.04"
+                                },
+                                "grouping_operation": {
+                                    "using_filesort": true,
+                                    "cost_info": {
+                                        "sort_cost": "78.85"
+                                    },
+                                    "table": {
+                                        "table_name": "menu_rank",
+                                        "access_type": "ALL",
+                                        "rows_examined_per_scan": 415,
+                                        "rows_produced_per_join": 78,
+                                        "filtered": "19.00",
+                                        "cost_info": {
+                                            "read_cost": "41.30",
+                                            "eval_cost": "7.88",
+                                            "prefix_cost": "49.19",
+                                            "data_read_per_join": "20K"
+                                        },
+                                        "used_columns": [
+                                            "usr_no",
+                                            "menu_nm",
+                                            "visit_rank",
+                                            "time_rank"
+                                        ],
+                                        "attached_condition": "((`menu_rank`.`visit_rank` = 1) or (`menu_rank`.`time_rank` = 1))",
+                                        "materialized_from_subquery": {
+                                            "using_temporary_table": true,
+                                            "dependent": false,
+                                            "cacheable": true,
+                                            "query_block": {
+                                                "select_id": 11,
+                                                "cost_info": {
+                                                    "query_cost": "896.15"
+                                                },
+                                                "windowing": {
+                                                    "windows": [
+                                                        {
+                                                            "name": "<unnamed window>",
+                                                            "definition_position": 1,
+                                                            "using_temporary_table": true,
+                                                            "using_filesort": true,
+                                                            "filesort_key": [
+                                                                "`USR_NO`",
+                                                                "count(0) desc",
+                                                                "`MENU_NM`"
+                                                            ],
+                                                            "functions": [
+                                                                "row_number"
+                                                            ]
+                                                        },
+                                                        {
+                                                            "name": "<unnamed window>",
+                                                            "definition_position": 2,
+                                                            "last_executed_window": true,
+                                                            "using_filesort": true,
+                                                            "filesort_key": [
+                                                                "`USR_NO`",
+                                                                "max(`LOG_TKTM`) desc"
+                                                            ],
+                                                            "functions": [
+                                                                "row_number"
+                                                            ]
+                                                        }
+                                                    ],
+                                                    "cost_info": {
+                                                        "sort_cost": "830.00"
+                                                    },
+                                                    "grouping_operation": {
+                                                        "using_temporary_table": true,
+                                                        "using_filesort": false,
+                                                        "table": {
+                                                            "table_name": "MENU_LOG",
+                                                            "access_type": "index",
+                                                            "possible_keys": [
+                                                                "menu_log_idx-02",
+                                                                "menu_log_idx-01"
+                                                            ],
+                                                            "key": "menu_log_idx-02",
+                                                            "used_key_parts": [
+                                                                "USR_NO",
+                                                                "MENU_NM"
+                                                            ],
+                                                            "key_length": "246",
+                                                            "rows_examined_per_scan": 649,
+                                                            "rows_produced_per_join": 415,
+                                                            "filtered": "63.94",
+                                                            "using_index": true,
+                                                            "cost_info": {
+                                                                "read_cost": "24.65",
+                                                                "eval_cost": "41.50",
+                                                                "prefix_cost": "66.15",
+                                                                "data_read_per_join": "155K"
+                                                            },
+                                                            "used_columns": [
+                                                                "LOG_TKTM",
+                                                                "LOG_ID",
+                                                                "USR_NO",
+                                                                "MENU_NM"
+                                                            ],
+                                                            "attached_condition": "(`kakaobank`.`menu_log`.`MENU_NM` not in ('login','logout'))"
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            ]
+        }
+    }
+}

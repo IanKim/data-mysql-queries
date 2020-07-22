@@ -1,0 +1,141 @@
+{
+    "query_block": {
+        "select_id": 1,
+        "cost_info": {
+            "query_cost": "464.19"
+        },
+        "ordering_operation": {
+            "using_filesort": true,
+            "windowing": {
+                "windows": [
+                    {
+                        "name": "<unnamed window>",
+                        "using_temporary_table": true,
+                        "using_filesort": true,
+                        "filesort_key": [
+                            "`menu_nm`"
+                        ],
+                        "frame_buffer": {
+                            "using_temporary_table": true,
+                            "optimized_frame_evaluation": true
+                        },
+                        "functions": [
+                            "sum"
+                        ]
+                    }
+                ],
+                "cost_info": {
+                    "sort_cost": "415.00"
+                },
+                "grouping_operation": {
+                    "using_temporary_table": true,
+                    "using_filesort": false,
+                    "table": {
+                        "table_name": "menu_trace",
+                        "access_type": "ALL",
+                        "rows_examined_per_scan": 415,
+                        "rows_produced_per_join": 415,
+                        "filtered": "100.00",
+                        "cost_info": {
+                            "read_cost": "7.69",
+                            "eval_cost": "41.50",
+                            "prefix_cost": "49.19",
+                            "data_read_per_join": "184K"
+                        },
+                        "used_columns": [
+                            "usr_no",
+                            "menu_nm",
+                            "prev_menu_nm"
+                        ],
+                        "materialized_from_subquery": {
+                            "using_temporary_table": true,
+                            "dependent": false,
+                            "cacheable": true,
+                            "query_block": {
+                                "select_id": 2,
+                                "cost_info": {
+                                    "query_cost": "66.15"
+                                },
+                                "table": {
+                                    "table_name": "curr_t",
+                                    "access_type": "index",
+                                    "possible_keys": [
+                                        "menu_log_idx-01"
+                                    ],
+                                    "key": "menu_log_idx-02",
+                                    "used_key_parts": [
+                                        "USR_NO",
+                                        "MENU_NM"
+                                    ],
+                                    "key_length": "246",
+                                    "rows_examined_per_scan": 649,
+                                    "rows_produced_per_join": 415,
+                                    "filtered": "63.94",
+                                    "using_index": true,
+                                    "cost_info": {
+                                        "read_cost": "24.65",
+                                        "eval_cost": "41.50",
+                                        "prefix_cost": "66.15",
+                                        "data_read_per_join": "155K"
+                                    },
+                                    "used_columns": [
+                                        "LOG_TKTM",
+                                        "USR_NO",
+                                        "MENU_NM"
+                                    ],
+                                    "attached_condition": "(`kakaobank`.`curr_t`.`MENU_NM` not in ('login','logout'))"
+                                },
+                                "select_list_subqueries": [
+                                    {
+                                        "dependent": true,
+                                        "cacheable": false,
+                                        "query_block": {
+                                            "select_id": 3,
+                                            "cost_info": {
+                                                "query_cost": "17.26"
+                                            },
+                                            "ordering_operation": {
+                                                "using_filesort": false,
+                                                "table": {
+                                                    "table_name": "prev_t",
+                                                    "access_type": "index",
+                                                    "possible_keys": [
+                                                        "PRIMARY",
+                                                        "menu_log_idx-02"
+                                                    ],
+                                                    "key": "PRIMARY",
+                                                    "used_key_parts": [
+                                                        "LOG_TKTM",
+                                                        "LOG_ID"
+                                                    ],
+                                                    "key_length": "140",
+                                                    "rows_examined_per_scan": 4,
+                                                    "rows_produced_per_join": 43,
+                                                    "filtered": "3.33",
+                                                    "backward_index_scan": true,
+                                                    "cost_info": {
+                                                        "read_cost": "4.28",
+                                                        "eval_cost": "4.33",
+                                                        "prefix_cost": "17.26",
+                                                        "data_read_per_join": "16K"
+                                                    },
+                                                    "used_columns": [
+                                                        "LOG_TKTM",
+                                                        "LOG_ID",
+                                                        "USR_NO",
+                                                        "MENU_NM"
+                                                    ],
+                                                    "attached_condition": "((`kakaobank`.`curr_t`.`LOG_TKTM` > `kakaobank`.`prev_t`.`LOG_TKTM`) and (`kakaobank`.`curr_t`.`USR_NO` = `kakaobank`.`prev_t`.`USR_NO`))"
+                                                }
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
